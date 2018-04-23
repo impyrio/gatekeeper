@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gatekeeper
+  namespace: default
+  labels:
+    app: gatekeeper
+    tier: public
+spec:
+  selector:
+    matchLabels:
+      run: gatekeeper
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gatekeeper
+      tier: public
+  template:
+    metadata:
+      name: gatekeeper
+      labels:
+        app: gatekeeper
+        tier: public
+    spec:
+      containers:
+      - name: gatekeeper
+        image: ${AWS_ECR_BASE}/gatekeeper
+        ports:
+          - name: http
+            containerPort: 80
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: gatekeeper
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${SSL_CERT_ARN}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+spec:
+  type: LoadBalancer
+  selector:
+    app: gatekeeper
+    tier: public
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: http

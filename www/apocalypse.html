@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>fountainhead.impyr.io</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+    <style>
+      .content {
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1em;
+        padding-right: 1em;
+        max-width: 768px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="banner">
+        <a href="http://github.com/impyrio/archon-fountainhead" target="_blank" style="float: right">view on github</a>
+        <h1 class="banner-head">fountainhead.impyr.io</h1>
+        <hr>
+        <h3>The apocalypse has come, and with it, this world is no more. The 
+          stars still echo with the words that brought this world to an end.</h3>
+        <hr>
+        <h2 id="a_body"></h2>
+      </div>
+    </div>
+  </body>
+  <script>
+    (function() {
+      var u1 = "https://api.github.com/repos/impyrio/archon-fountainhead/releases";
+      var r1 = new XMLHttpRequest();
+      r1.addEventListener("load", r1_load);
+      r1.open("GET", u1);
+      r1.send();
+
+      function r1_load(x){
+        var a = JSON.parse(x.target.responseText);
+        for(var i = 0; i < a.length; i++) {
+          if (a[i].name === "apocalypse") {
+            var r2 = new XMLHttpRequest();
+            r2.addEventListener("load", r2_load);
+            r2.open("GET", a[i].url);
+            r2.setRequestHeader("Accept", "application/vnd.github.v3.html+json");
+            r2.send();
+          }
+        }
+
+        function r2_load(x){
+          var o = JSON.parse(x.target.responseText);
+          document.getElementById("a_body").innerHTML = o.body_html;
+        }
+      }
+    })();
+  </script>
+</html>
