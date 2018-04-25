@@ -15,7 +15,7 @@ RUN mkdir -p /run/nginx
 # Add our nginx conf
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY ./www/maintenance.html /www/maintenance.html
+#COPY ./www/maintenance.html /www/maintenance.html
 
 EXPOSE 80
 
