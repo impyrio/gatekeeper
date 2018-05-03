@@ -1,5 +1,5 @@
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: gatekeeper
   namespace: default
@@ -7,9 +7,6 @@ metadata:
     app: gatekeeper
     tier: public
 spec:
-  selector:
-    matchLabels:
-      run: gatekeeper
   replicas: 1
   selector:
     matchLabels:
@@ -25,6 +22,9 @@ spec:
       containers:
       - name: gatekeeper
         image: impyrio/gatekeeper:${DOCKER_IMAGE_TAG}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
         ports:
           - name: http
             containerPort: 80
@@ -35,6 +35,26 @@ spec:
           limits:
             cpu: 50m
             memory: 100Mi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: gatekeeper-config
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: gatekeeper-config
+  namespace: default
+data:
+  archon.redirect.conf: |-
+    if ($http_x_forwarded_proto = "http") {
+      return 301 $self_uri$request_uri;
+    }
+    if ($host != "fountainhead.impyr.io") {
+      return 302 $self_uri$request_uri;
+    }
 
 ---
 

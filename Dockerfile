@@ -17,6 +17,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 #COPY ./www/maintenance.html /www/maintenance.html
 
+# Add volume for extra configuration files
+VOLUME [ "/etc/conf" ]
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
