@@ -24,7 +24,7 @@ spec:
         image: impyrio/gatekeeper:${DOCKER_IMAGE_TAG}
         volumeMounts:
         - name: config-volume
-          mountPath: /etc/config
+          mountPath: /etc/conf
         ports:
           - name: http
             containerPort: 80
