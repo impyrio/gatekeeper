@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: gatekeeper
-        image: ${AWS_ECR_BASE}/gatekeeper:${DOCKER_IMAGE_TAG}
+        image: impyrio/gatekeeper:${DOCKER_IMAGE_TAG}
         ports:
           - name: http
             containerPort: 80
