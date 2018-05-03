@@ -50,10 +50,10 @@ metadata:
 data:
   archon.redirect.conf: |-
     if ($http_x_forwarded_proto = "http") {
-      return 301 $self_uri$request_uri;
+      return 301 "${INSTANCE_URI}$request_uri";
     }
-    if ($host != "fountainhead.impyr.io") {
-      return 302 $self_uri$request_uri;
+    if ($host != "${INSTANCE_HOST}") {
+      return 302 "${INSTANCE_URI}$request_uri";
     }
 
 ---
